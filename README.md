@@ -22,13 +22,25 @@ This repository contains the HSE Terminology specification, providing standardiz
 
 ## Viewing the Terminology
 
-Open `HSE Terminology.html` in a web browser to view:
+### Online (GitHub Pages)
+
+Visit the live deployment: **https://hse-ucd.github.io/hse-terminology/**
+
+The site is automatically deployed via GitHub Actions whenever changes are pushed to the main branch.
+
+### Local Viewing
+
+Open `index.html` or `HSE Terminology.html` in a web browser to view:
 - Abstract and introduction
 - Full metadata section
 - A-Z terminology listing
 - Navigation to tree visualization
 
 Click the "Tree View" button or open `visualize.htm` directly to see the interactive hierarchical tree.
+
+## Deployment
+
+The site is automatically deployed to GitHub Pages using GitHub Actions. The workflow is defined in `.github/workflows/deploy.yml` and triggers on every push to the main branch.
 
 ## Version Information
 
