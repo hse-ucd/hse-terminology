@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<!-- saved from url=(0042)https://skos-play.sparna.fr/play/visualize -->
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <script src="./visualize_files/d3.v3.min.js" charset="utf-8"></script>
+  <script src="./visualize_files/jquery.min.js"></script>
+  <link href="./visualize_files/bootstrap.min.css" rel="stylesheet">
+  <script src="./visualize_files/bootstrap.min.js"></script>
+
+  <style type="text/css">
+    .node circle {
+      cursor: pointer;
+      fill: #fff;
+      stroke: steelblue;
+      stroke-width: 1.5px;
+    }
+
+    .node text {
+      font-size: 12px;
+    }
+
+    path.link {
+      fill: none;
+      stroke: #aaa;
+      stroke-width: 3px;
+    }
+
+    .ext-link {
+      font-weight: bold;
+    }
+
+    .nav-header {
+      background-color: #2F6FAB;
+      color: white;
+      padding: 10px 20px;
+      margin-bottom: 10px;
+    }
+
+    .nav-header h2 {
+      margin: 0;
+      font-size: 18px;
+      display: inline-block;
+    }
+
+    .back-link {
+      float: right;
+      color: white;
+      text-decoration: none;
+      padding: 5px 15px;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .back-link:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+      text-decoration: none;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="nav-header">
+    <h2>HSE Terminology - Tree Visualization</h2>
+    <a href="HSE Terminology.html" class="back-link">← Back to A-Z View</a>
+    <div style="clear: both;"></div>
+  </div>
+  <div id="header" style="text-align:center; font-size: 0.9em;">
+    <span id="help-popover" data-original-title="" title="" style="text-decoration: underline; cursor: pointer;"><i
+        class="icon-info-sign"></i>help</span>
+  </div>
+  <div id="body"></div>
+  <script type="text/javascript">
+
+    var m = [20, 120, 20, 120],
+      w = 1280 - m[1] - m[3],
+      h = 800 - m[0] - m[2],
+      i = 0,
+      root;
+
+    var tree = d3.layout.tree()
+      .size([h, w]);
+
+    var diagonal = d3.svg.diagonal()
+      .projection(function (d) { return [d.y, d.x]; });
+
+    var vis = d3.select("#body").append("svg:svg")
+      .attr("width", w + m[1] + m[3])
+      .attr("height", h + m[0] + m[2])
+      .append("svg:g")
+      .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+
+
+    var dataset = { "uri": "https://hse.ie/terminology/phpt#HSETerminology", "name": "HSE Terminology", "children": [{ "uri": "https://hse.ie/terminology/phpt#AccessRightsCode", "name": "Access Rights Code", "children": [{ "uri": "https://hse.ie/terminology/phpt#NonPublic", "name": "Non public", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Public", "name": "Public", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Restricted", "name": "Restricted", "size": 1.0 }], "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#DataTypeCode", "name": "Data Type Code", "children": [{ "uri": "https://hse.ie/terminology/phpt#APROF", "name": "APROF", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#ATTO_LEX", "name": "ATTO LEX", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#ATTO_PUB", "name": "ATTO PUB", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#CODE_LIST", "name": "CODE LIST", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#CORE_COMP", "name": "CORE COMP", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#DIRECTORY", "name": "DIRECTORY", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#DOMAIN_MODEL", "name": "DOMAIN MODEL", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#DSCRP_SERV", "name": "DSCRP SERV", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#GEOSPATIAL", "name": "GEOSPATIAL", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#GLOSSARY", "name": "GLOSSARY", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#HVD", "name": "HVD", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#IEPD", "name": "IEPD", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#MAPPING", "name": "MAPPING", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#NAL", "name": "NAL", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#ONTOLOGY", "name": "ONTOLOGY", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#OP_DATPRO", "name": "OP DATPRO", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#PERSONAL_DATA", "name": "PERSONAL DATA", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#RELEASE", "name": "RELEASE", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#SCHEMA", "name": "SCHEMA", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#STATISTICAL", "name": "STATISTICAL", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#STYLES", "name": "STYLES", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#SYNTAX_ECD_SCHEME", "name": "SYNTAX ECD SCHEME", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#SYNTHETIC_DATA", "name": "SYNTHETIC DATA", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#TAXONOMY", "name": "TAXONOMY", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#TEST_DATA", "name": "TEST DATA", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#THESAURUS", "name": "THESAURUS", "size": 1.0 }], "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#DomainCode", "name": "Domain Code", "children": [{ "uri": "https://hse.ie/terminology/phpt#CHRONIC_DISEASES", "name": "CHRONIC DISEASES", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#CONNECTIONS_AND_PARTICIPATION", "name": "CONNECTIONS AND PARTICIPATION", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#DEMOGRAPHICS", "name": "DEMOGRAPHICS", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#EDUCATION_AND_SKILLS", "name": "EDUCATION AND SKILLS", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#FINANCES", "name": "FINANCES", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#HEALTH_BEHAVIOURS", "name": "HEALTH BEHAVIOURS", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#HEALTHCARE_AVAILABILITY_AND_INTEGRATION", "name": "HEALTHCARE AVAILABILITY AND INTEGRATION", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#HEALTHCARE_USE", "name": "HEALTHCARE USE", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#HEALTH_STATUS", "name": "HEALTH STATUS", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#HOUSING_AND_ENVIRONMENT", "name": "HOUSING AND ENVIRONMENT", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#PROVIDING_CARE", "name": "PROVIDING CARE", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#VULNERABLE_GROUPS", "name": "VULNERABLE GROUPS", "size": 1.0 }], "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#DurationCode", "name": "Duration Code", "children": [{ "uri": "https://hse.ie/terminology/phpt#P1D", "name": "P1D", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#P1M", "name": "P1M", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#P1W", "name": "P1W", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#P1Y", "name": "P1Y", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#P3M", "name": "P3M", "size": 1.0 }], "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#FrequencyCode", "name": "Frequency Code", "children": [{ "uri": "https://hse.ie/terminology/phpt#ANNUAL", "name": "ANNUAL", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#AS_NEEDED", "name": "AS NEEDED", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#DAILY", "name": "DAILY", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#EVERY_2_YEARS", "name": "EVERY  2  YEARS", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#EVERY_3_YEARS", "name": "EVERY  3  YEARS", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#EVERY_4_YEARS", "name": "EVERY  4  YEARS", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#EVERY_5_YEARS", "name": "EVERY 5  YEARS", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#MONTHLY", "name": "MONTHLY", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#NEVER", "name": "NEVER", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#QUARTERLY", "name": "QUARTERLY", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#WEEKLY", "name": "WEEKLY", "size": 1.0 }], "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#HealthDataCategory", "name": "Health Data Category", "children": [{ "uri": "https://hse.ie/terminology/phpt#ADMIN", "name": "ADMIN", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#AGGREGATED", "name": "AGGREGATED", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#BIOBANK", "name": "BIOBANK", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#DEV_REGISTRIES", "name": "DEV REGISTRIES", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#EHR", "name": "EHR", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#GENETIC", "name": "GENETIC", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#IMPACT_FACTORS", "name": "IMPACT FACTORS", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#MED_REGISTRIES", "name": "MED REGISTRIES", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#MOLECULAR", "name": "MOLECULAR", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#OTHER_DEV", "name": "OTHER DEV", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#PATHOGENS", "name": "PATHOGENS", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#PERSONAL_DEV", "name": "PERSONAL DEV", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#POPULATION", "name": "POPULATION", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#PROFESSIONAL", "name": "PROFESSIONAL", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#SURVEY", "name": "SURVEY", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#TRIALS", "name": "TRIALS", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#WELLNESS", "name": "WELLNESS", "size": 1.0 }], "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#HealthTheme", "name": "Health Theme", "children": [{ "uri": "https://hse.ie/terminology/phpt#HealthThemes", "name": "Health Themes", "size": 1.0 }], "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#IndicatorTypeCode", "name": "Indicator Type Code", "children": [{ "uri": "https://hse.ie/terminology/phpt#Count", "name": "Count", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Projection", "name": "Projection", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Proportion", "name": "Proportion", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Rate", "name": "Rate", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Ratio", "name": "Ratio", "size": 1.0 }], "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#LegalBasisCode", "name": "Legal Basis Code", "children": [{ "uri": "https://hse.ie/terminology/phpt#Consent", "name": "Consent", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#ContractPerformance", "name": "Contract Performance", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#DataControllerContract", "name": "Data Controller Contract", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#DataProcessorContract", "name": "Data Processor Contract", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#DataSubjectContract", "name": "Data Subject Contract", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#DataTransferLegalBasis", "name": "Data Transfer LegalBasis", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#EnterIntoContract", "name": "Enter Into Contract", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#LegalObligation", "name": "Legal Obligation", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#LegitimateInterest", "name": "Legitimate Interest", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#OfficialAuthorityOfController", "name": "Official Authority Of Controller", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#PublicInterest", "name": "Public Interest", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#ThirdPartyContract", "name": "Third Party Contract", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#VitalInterest", "name": "Vital Interest", "size": 1.0 }], "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#LegislationCode", "name": "Legislation Code", "children": [{ "uri": "https://hse.ie/terminology/phpt#EuropeanLegislationIdentifier%28ELI%29", "name": "European Legislation Identifier (ELI)", "size": 1.0 }], "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#LocationCode", "name": "Location Code", "children": [{ "uri": "https://hse.ie/terminology/phpt#CarlowKilkennyandTipperarySouthIHA", "name": "Carlow Kilkenny and Tipperary South IHA", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#CavanMonaghanIHA", "name": "Cavan Monaghan IHA", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#ClareandLimerickCountyIHA", "name": "Clare and Limerick County IHA", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Carlow", "name": "Co. Carlow", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Cavan", "name": "Co. Cavan", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Clare", "name": "Co. Clare", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Cork", "name": "Co. Cork", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Donegal", "name": "Co. Donegal", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Dublin", "name": "Co. Dublin", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Galway", "name": "Co. Galway", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Kerry", "name": "Co. Kerry", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Kildare", "name": "Co. Kildare", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Kilkenny", "name": "Co. Kilkenny", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Laois", "name": "Co. Laois", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Leitrim", "name": "Co. Leitrim", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Limerick", "name": "Co. Limerick", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Longford", "name": "Co. Longford", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Louth", "name": "Co. Louth", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Mayo", "name": "Co. Mayo", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Meath", "name": "Co. Meath", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Monaghan", "name": "Co. Monaghan", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Offaly", "name": "Co. Offaly", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Roscommon", "name": "Co. Roscommon", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Sligo", "name": "Co. Sligo", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Tipperary", "name": "Co. Tipperary", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Waterford", "name": "Co. Waterford", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Westmeath", "name": "Co. Westmeath", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Wexford", "name": "Co. Wexford", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Wicklow", "name": "Co. Wicklow", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#CorkNorthandEastIHA", "name": "Cork North and East IHA", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#CorkSouthandWestIHA", "name": "Cork South and West IHA", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#DonegalIHA", "name": "Donegal IHA", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#DublinNorthCityandWestIHA", "name": "Dublin North City and West IHA", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#DublinNorthCountyIHA", "name": "Dublin North County IHA", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#DublinSouthandWicklowIHA", "name": "Dublin South and Wicklow IHA", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#DublinSouthCityandWestIHA", "name": "Dublin South City and West IHA", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#DublinSouthWestIHA", "name": "Dublin South West IHA", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#GalwayRoscommonIHA", "name": "Galway Roscommon IHA", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#HSEDublinandMidlands", "name": "HSE Dublin and Midlands", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#HSEDublinandNorthEast", "name": "HSE Dublin and North East", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#HSEDublinandSouthEast", "name": "HSE Dublin and South East", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#HSEMidwest", "name": "HSE Midwest", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#HSESouthWest", "name": "HSE South West", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#HSEWestandNorthWest", "name": "HSE West and North West", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Ireland", "name": "Ireland", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#KerryIHA", "name": "Kerry IHA", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#KildareWestWicklowIHA", "name": "Kildare West Wicklow IHA", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#LimerickCityandTipperaryNorthIHA", "name": "Limerick City and Tipperary North IHA", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#LouthMeathIHA", "name": "Louth Meath IHA", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#MayoIHA", "name": "Mayo IHA", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#MidlandsIHA", "name": "Midlands IHA", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#SligoLeitrimIHA", "name": "Sligo Leitrim IHA", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#WaterfordWexfordIHA", "name": "Waterford Wexford IHA", "size": 1.0 }], "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#PersonalDataCode", "name": "Personal Data Code", "children": [{ "uri": "https://hse.ie/terminology/phpt#dpv%3AAnonymisedData", "name": "dpv:AnonymisedData", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#dpv%3ACollectedPersonalData", "name": "dpv:CollectedPersonalData", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#dpv%3ADerivedPersonalData", "name": "dpv:DerivedPersonalData", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#dpv%3AGeneratedPersonalData", "name": "dpv:GeneratedPersonalData", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#dpv%3AIdentifyingPersonalData", "name": "dpv:IdentifyingPersonalData", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#dpv%3ANonPersonalData", "name": "dpv:NonPersonalData", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#dpv%3APersonalData", "name": "dpv:PersonalData", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#dpv%3APseudonymisedData", "name": "dpv:PseudonymisedData", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#dpv%3ASensitivePersonalData", "name": "dpv:SensitivePersonalData", "size": 1.0 }], "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#PublisherTypeCode", "name": "Publisher Type Code", "children": [{ "uri": "https://hse.ie/terminology/phpt#Community-basedandClinicalCareOrganisations", "name": "Community-based and Clinical Care Organisations", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#HealthDepartments", "name": "Health Departments", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#HospitalsandHealthcareProviders", "name": "Hospitals and Healthcare Providers", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#NationalMappingAgency", "name": "National Mapping Agency", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#NationalPublicHealthInstitute", "name": "National Public Health Institute", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#Othercodesasneeded", "name": "Other codes as needed", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#StatisticalAgency", "name": "Statistical Agency ", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#UniversitiesandResearchCenters", "name": "Universities and Research Centers", "size": 1.0 }], "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#SpatialGranularityCode", "name": "Spatial Granularity Code", "children": [{ "uri": "https://hse.ie/terminology/phpt#County", "name": "County", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#HealthRegion", "name": "Health Region", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#IHA", "name": "IHA", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#LAU", "name": "LAU", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#LHO", "name": "LHO", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#National", "name": "National", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#NUTS1", "name": "NUTS1", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#NUTS2", "name": "NUTS2", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#NUTS3", "name": "NUTS3", "size": 1.0 }], "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#StatusCode", "name": "Status Code", "children": [{ "uri": "https://hse.ie/terminology/phpt#ExcludefromCatalogue", "name": "Exclude from Catalogue", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#ExcludefromProfile", "name": "Exclude from Profile", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#IncludeinCatalogue", "name": "Include in Catalogue", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#IncludeinProfile", "name": "Include in Profile", "size": 1.0 }, { "uri": "https://hse.ie/terminology/phpt#UnderConsideration", "name": "Under Consideration", "size": 1.0 }], "size": 1.0 }], "size": 1.0 };
+    console.log(dataset.uri);
+    //var json = JSON.parse(dataset);
+    // d3.json("json?language=&root=", function(json) {
+    root = dataset;
+    root.x0 = h / 2;
+    root.y0 = 0;
+
+    function toggleAll(d) {
+      if (d.children) {
+        d.children.forEach(toggleAll);
+        toggle(d);
+      }
+    }
+
+    // Initialize the display to show a few nodes.
+    root.children.forEach(toggleAll);
+    update(root);
+    // });
+
+    function update(source) {
+      var duration = d3.event && d3.event.altKey ? 5000 : 500;
+
+      // Compute the new tree layout.
+      var nodes = tree.nodes(root).reverse();
+
+      // Normalize for fixed-depth.
+      nodes.forEach(function (d) { d.y = d.depth * 180; });
+
+      // Update the nodes…
+      var node = vis.selectAll("g.node")
+        .data(nodes, function (d) { return d.id || (d.id = ++i); });
+
+      // Enter any new nodes at the parent's previous position.
+      var nodeEnter = node.enter().append("svg:g")
+        .attr("class", "node")
+        .attr("transform", function (d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
+        .on("click", function (d) { toggle(d); update(d); });
+
+      nodeEnter.append("svg:circle")
+        .attr("r", 1e-6)
+        .style("fill", function (d) { return d._children ? "lightsteelblue" : "#fff"; });
+
+      // add a link to the concept
+      var a = nodeEnter.append("a")
+        .attr("xlink:href", function (d) { return d.uri; })
+        .attr("target", "_blank");
+
+      a.append("svg:text")
+        .attr("x", function (d) { return d.children || d._children ? -10 : 10; })
+        .attr("dy", ".35em")
+        .attr("text-anchor", function (d) { return d.children || d._children ? "end" : "start"; })
+        .text(function (d) { return (d.name != null) ? d.name : d.uri; })
+        .style("fill-opacity", 1e-6);
+
+      // Transition nodes to their new position.
+      var nodeUpdate = node.transition()
+        .duration(duration)
+        .attr("transform", function (d) { return "translate(" + d.y + "," + d.x + ")"; });
+
+      nodeUpdate.select("circle")
+        .attr("r", 6)
+        .style("fill", function (d) { return d._children ? "lightsteelblue" : "#fff"; });
+
+      nodeUpdate.select("text")
+        .style("fill-opacity", 1);
+
+      // Transition exiting nodes to the parent's new position.
+      var nodeExit = node.exit().transition()
+        .duration(duration)
+        .attr("transform", function (d) { return "translate(" + source.y + "," + source.x + ")"; })
+        .remove();
+
+      nodeExit.select("circle")
+        .attr("r", 1e-6);
+
+      nodeExit.select("text")
+        .style("fill-opacity", 1e-6);
+
+      // Update the links…
+      var link = vis.selectAll("path.link")
+        .data(tree.links(nodes), function (d) { return d.target.id; });
+
+      // Enter any new links at the parent's previous position.
+      link.enter().insert("svg:path", "g")
+        .attr("class", "link")
+        .attr("d", function (d) {
+          var o = { x: source.x0, y: source.y0 };
+          return diagonal({ source: o, target: o });
+        })
+        .transition()
+        .duration(duration)
+        .attr("d", diagonal);
+
+      // Transition links to their new position.
+      link.transition()
+        .duration(duration)
+        .attr("d", diagonal);
+
+      // Transition exiting nodes to the parent's new position.
+      link.exit().transition()
+        .duration(duration)
+        .attr("d", function (d) {
+          var o = { x: source.x, y: source.y };
+          return diagonal({ source: o, target: o });
+        })
+        .remove();
+
+      // Stash the old positions for transition.
+      nodes.forEach(function (d) {
+        d.x0 = d.x;
+        d.y0 = d.y;
+      });
+    }
+
+    // Toggle children.
+    function toggle(d) {
+      if (d.children) {
+        d._children = d.children;
+        d.children = null;
+      } else {
+        d.children = d._children;
+        d._children = null;
+      }
+    }
+
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      // add external link behavior to every external link
+      $('text').mouseover(function () {
+        $(this).attr("class", "ext-link");
+      });
+      $('text').mouseout(function () {
+        $(this).attr("class", "");
+      });
+
+      $('#help-popover').popover({
+        html: true,
+        trigger: "click",
+        delay: { show: 0, hide: 400 },
+        content: '<ol><li>Click a blue circle to unfold the tree (white circles are the tree leaves and are inactive).</li><li>Click an open node to fold id.</li><li>Click a label to navigate to this concept URI.</li></ol>',
+        placement: "bottom"
+      });
+      $('#help-popover').css("text-decoration", "underline").css("cursor", "pointer");
+    });         
+  </script>
+
+</body>
+
+</html>
