@@ -36,7 +36,26 @@ Open `index.html` or `HSE Terminology.html` in a web browser to view:
 - A-Z terminology listing
 - Navigation to tree visualization
 
-Click the "Tree View" button or open `visualize.htm` directly to see the interactive hierarchical tree.
+Click the "Tree View" link or open `visualize.html` directly to see the interactive hierarchical D3.js tree.
+
+## Generating / Updating the Documentation
+
+The terminology HTML is generated using [SKOS Play](https://skos-play.sparna.fr/) from the source Turtle file in `hse-data/mapping/terminology/terms-X.X.X.ttl`.
+
+After generating with SKOS-Play, run the metadata injection script to populate the abstract and metadata fields from the `skos:ConceptScheme` in the TTL:
+
+```bash
+# From the hse-scripts directory (with virtualenv active)
+python scripts/terminology/inject_skos_metadata.py \
+  ../hse-data/mapping/terminology/terms-1.0.1.ttl \
+  ../hse-terminology/1.0.1/index.html
+```
+
+This replaces the metadata section in the SKOS-Play output with values read directly from the TTL, so it stays in sync with the source of truth.
+
+### Tree Visualisation (`visualize.html`)
+
+The tree view contains a single interactive D3.js collapsible tree. The static pre-rendered SVG that SKOS-Play previously included has been removed — only the dynamic version remains.
 
 ## Deployment
 
