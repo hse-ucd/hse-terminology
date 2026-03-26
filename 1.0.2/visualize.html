@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<!-- saved from url=(0042)https://skos-play.sparna.fr/play/visualize -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <script src="./visualize_files/d3.v3.min.js" charset="utf-8"></script>
+    <script src="./visualize_files/jquery.min.js"></script>
+    <link href="./visualize_files/bootstrap.min.css" rel="stylesheet">
+    <script src="./visualize_files/bootstrap.min.js"></script>
+    
+    <style type="text/css">
+
+.node circle {
+  cursor: pointer;
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font-size: 12px;
+}
+
+path.link {
+  fill: none;
+  stroke: #aaa;
+  stroke-width: 3px;
+}
+
+.ext-link {
+  font-weight: bold;
+}
+
+    </style>
+  </head>
+  <body>
+    <div id="header" style="text-align:center; font-size: 0.9em;">
+  		<span id="help-popover" data-original-title="" title="" style="text-decoration: underline; cursor: pointer;"><i class="icon-info-sign"></i>help</span>
+  	</div>
+    <div id="body">
+    <script type="text/javascript">
+
+var m = [20, 120, 20, 120],
+    w = 1280 - m[1] - m[3],
+    h = 800 - m[0] - m[2],
+    i = 0,
+    root;
+
+var tree = d3.layout.tree()
+    .size([h, w]);
+
+var diagonal = d3.svg.diagonal()
+    .projection(function(d) { return [d.y, d.x]; });
+
+var vis = d3.select("#body").append("svg:svg")
+    .attr("width", w + m[1] + m[3])
+    .attr("height", h + m[0] + m[2])
+  	.append("svg:g")
+    .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+
+
+  var dataset ={"uri":"https://w3id.org/hse/terminology#HSETerminology","name":"HSE Population Health Profile Terminology","children":[{"uri":"https://w3id.org/hse/terminology#AccessRightsCode","name":"Access Rights Code","children":[{"uri":"https://w3id.org/hse/terminology#NonPublic","name":"Non public","size":1.0},{"uri":"https://w3id.org/hse/terminology#Public","name":"Public","size":1.0},{"uri":"https://w3id.org/hse/terminology#Restricted","name":"Restricted","size":1.0}],"size":1.0},{"uri":"https://w3id.org/hse/terminology#DataTypeCode","name":"Data Type Code","children":[{"uri":"https://w3id.org/hse/terminology#APROF","name":"APROF","size":1.0},{"uri":"https://w3id.org/hse/terminology#ATTO_LEX","name":"ATTO LEX","size":1.0},{"uri":"https://w3id.org/hse/terminology#ATTO_PUB","name":"ATTO PUB","size":1.0},{"uri":"https://w3id.org/hse/terminology#CODE_LIST","name":"CODE LIST","size":1.0},{"uri":"https://w3id.org/hse/terminology#CORE_COMP","name":"CORE COMP","size":1.0},{"uri":"https://w3id.org/hse/terminology#DIRECTORY","name":"DIRECTORY","size":1.0},{"uri":"https://w3id.org/hse/terminology#DOMAIN_MODEL","name":"DOMAIN MODEL","size":1.0},{"uri":"https://w3id.org/hse/terminology#DSCRP_SERV","name":"DSCRP SERV","size":1.0},{"uri":"https://w3id.org/hse/terminology#GEOSPATIAL","name":"GEOSPATIAL","size":1.0},{"uri":"https://w3id.org/hse/terminology#GLOSSARY","name":"GLOSSARY","size":1.0},{"uri":"https://w3id.org/hse/terminology#HVD","name":"HVD","size":1.0},{"uri":"https://w3id.org/hse/terminology#IEPD","name":"IEPD","size":1.0},{"uri":"https://w3id.org/hse/terminology#MAPPING","name":"MAPPING","size":1.0},{"uri":"https://w3id.org/hse/terminology#NAL","name":"NAL","size":1.0},{"uri":"https://w3id.org/hse/terminology#ONTOLOGY","name":"ONTOLOGY","size":1.0},{"uri":"https://w3id.org/hse/terminology#OP_DATPRO","name":"OP DATPRO","size":1.0},{"uri":"https://w3id.org/hse/terminology#PERSONAL_DATA","name":"PERSONAL DATA","size":1.0},{"uri":"https://w3id.org/hse/terminology#RELEASE","name":"RELEASE","size":1.0},{"uri":"https://w3id.org/hse/terminology#SCHEMA","name":"SCHEMA","size":1.0},{"uri":"https://w3id.org/hse/terminology#STATISTICAL","name":"STATISTICAL","size":1.0},{"uri":"https://w3id.org/hse/terminology#STYLES","name":"STYLES","size":1.0},{"uri":"https://w3id.org/hse/terminology#SYNTAX_ECD_SCHEME","name":"SYNTAX ECD SCHEME","size":1.0},{"uri":"https://w3id.org/hse/terminology#SYNTHETIC_DATA","name":"SYNTHETIC DATA","size":1.0},{"uri":"https://w3id.org/hse/terminology#TAXONOMY","name":"TAXONOMY","size":1.0},{"uri":"https://w3id.org/hse/terminology#TEST_DATA","name":"TEST DATA","size":1.0},{"uri":"https://w3id.org/hse/terminology#THESAURUS","name":"THESAURUS","size":1.0}],"size":1.0},{"uri":"https://w3id.org/hse/terminology#DomainCode","name":"Domain Code","children":[{"uri":"https://w3id.org/hse/terminology#CHRONIC_DISEASES","name":"CHRONIC DISEASES","size":1.0},{"uri":"https://w3id.org/hse/terminology#CONNECTIONS_AND_PARTICIPATION","name":"CONNECTIONS AND PARTICIPATION","size":1.0},{"uri":"https://w3id.org/hse/terminology#DEMOGRAPHICS","name":"DEMOGRAPHICS","size":1.0},{"uri":"https://w3id.org/hse/terminology#EDUCATION_AND_SKILLS","name":"EDUCATION AND SKILLS","size":1.0},{"uri":"https://w3id.org/hse/terminology#FINANCES","name":"FINANCES","size":1.0},{"uri":"https://w3id.org/hse/terminology#HEALTH_BEHAVIOURS","name":"HEALTH BEHAVIOURS","size":1.0},{"uri":"https://w3id.org/hse/terminology#HEALTHCARE_AVAILABILITY_AND_INTEGRATION","name":"HEALTHCARE AVAILABILITY AND INTEGRATION","size":1.0},{"uri":"https://w3id.org/hse/terminology#HEALTHCARE_USE","name":"HEALTHCARE USE","size":1.0},{"uri":"https://w3id.org/hse/terminology#HEALTH_STATUS","name":"HEALTH STATUS","size":1.0},{"uri":"https://w3id.org/hse/terminology#HOUSING_AND_ENVIRONMENT","name":"HOUSING AND ENVIRONMENT","size":1.0},{"uri":"https://w3id.org/hse/terminology#PROVIDING_CARE","name":"PROVIDING CARE","size":1.0},{"uri":"https://w3id.org/hse/terminology#VULNERABLE_GROUPS","name":"VULNERABLE GROUPS","size":1.0}],"size":1.0},{"uri":"https://w3id.org/hse/terminology#DurationCode","name":"Duration Code","children":[{"uri":"https://w3id.org/hse/terminology#P1D","name":"P1D","size":1.0},{"uri":"https://w3id.org/hse/terminology#P1M","name":"P1M","size":1.0},{"uri":"https://w3id.org/hse/terminology#P1W","name":"P1W","size":1.0},{"uri":"https://w3id.org/hse/terminology#P1Y","name":"P1Y","size":1.0},{"uri":"https://w3id.org/hse/terminology#P3M","name":"P3M","size":1.0}],"size":1.0},{"uri":"https://w3id.org/hse/terminology#FrequencyCode","name":"Frequency Code","children":[{"uri":"https://w3id.org/hse/terminology#ANNUAL","name":"ANNUAL","size":1.0},{"uri":"https://w3id.org/hse/terminology#AS_NEEDED","name":"AS NEEDED","size":1.0},{"uri":"https://w3id.org/hse/terminology#DAILY","name":"DAILY","size":1.0},{"uri":"https://w3id.org/hse/terminology#EVERY_2_YEARS","name":"EVERY  2  YEARS","size":1.0},{"uri":"https://w3id.org/hse/terminology#EVERY_3_YEARS","name":"EVERY  3  YEARS","size":1.0},{"uri":"https://w3id.org/hse/terminology#EVERY_4_YEARS","name":"EVERY  4  YEARS","size":1.0},{"uri":"https://w3id.org/hse/terminology#EVERY_5_YEARS","name":"EVERY 5  YEARS","size":1.0},{"uri":"https://w3id.org/hse/terminology#MONTHLY","name":"MONTHLY","size":1.0},{"uri":"https://w3id.org/hse/terminology#NEVER","name":"NEVER","size":1.0},{"uri":"https://w3id.org/hse/terminology#QUARTERLY","name":"QUARTERLY","size":1.0},{"uri":"https://w3id.org/hse/terminology#WEEKLY","name":"WEEKLY","size":1.0}],"size":1.0},{"uri":"https://w3id.org/hse/terminology#HealthDataCategory","name":"Health Data Category","children":[{"uri":"https://w3id.org/hse/terminology#ADMIN","name":"ADMIN","size":1.0},{"uri":"https://w3id.org/hse/terminology#AGGREGATED","name":"AGGREGATED","size":1.0},{"uri":"https://w3id.org/hse/terminology#BIOBANK","name":"BIOBANK","size":1.0},{"uri":"https://w3id.org/hse/terminology#DEV_REGISTRIES","name":"DEV REGISTRIES","size":1.0},{"uri":"https://w3id.org/hse/terminology#EHR","name":"EHR","size":1.0},{"uri":"https://w3id.org/hse/terminology#GENETIC","name":"GENETIC","size":1.0},{"uri":"https://w3id.org/hse/terminology#IMPACT_FACTORS","name":"IMPACT FACTORS","size":1.0},{"uri":"https://w3id.org/hse/terminology#MED_REGISTRIES","name":"MED REGISTRIES","size":1.0},{"uri":"https://w3id.org/hse/terminology#MOLECULAR","name":"MOLECULAR","size":1.0},{"uri":"https://w3id.org/hse/terminology#OTHER_DEV","name":"OTHER DEV","size":1.0},{"uri":"https://w3id.org/hse/terminology#PATHOGENS","name":"PATHOGENS","size":1.0},{"uri":"https://w3id.org/hse/terminology#PERSONAL_DEV","name":"PERSONAL DEV","size":1.0},{"uri":"https://w3id.org/hse/terminology#POPULATION","name":"POPULATION","size":1.0},{"uri":"https://w3id.org/hse/terminology#PROFESSIONAL","name":"PROFESSIONAL","size":1.0},{"uri":"https://w3id.org/hse/terminology#SURVEY","name":"SURVEY","size":1.0},{"uri":"https://w3id.org/hse/terminology#TRIALS","name":"TRIALS","size":1.0},{"uri":"https://w3id.org/hse/terminology#WELLNESS","name":"WELLNESS","size":1.0}],"size":1.0},{"uri":"https://w3id.org/hse/terminology#HealthTheme","name":"Health Theme","children":[{"uri":"https://w3id.org/hse/terminology#OlderAdultProfileTheme","name":"Older Adults profile themes","children":[{"uri":"https://w3id.org/hse/terminology#ChronicConditions","name":"Chronic Conditions","size":1.0},{"uri":"https://w3id.org/hse/terminology#DeterminantsOfHealthWellbeing","name":"Determinants of Health and Wellbeing","size":1.0},{"uri":"https://w3id.org/hse/terminology#OptimisingHealthWellbeing","name":"Optimising Health and Wellbeing","size":1.0},{"uri":"https://w3id.org/hse/terminology#OurPopulation","name":"Our Population","size":1.0},{"uri":"https://w3id.org/hse/terminology#UseOfAcuteServices","name":"Use of Acute Services","size":1.0},{"uri":"https://w3id.org/hse/terminology#UseOfCommunityServices","name":"Use of Community Services","size":1.0}],"size":1.0}],"size":1.0},{"uri":"https://w3id.org/hse/terminology#IndicatorTypeCode","name":"Indicator Type Code","children":[{"uri":"https://w3id.org/hse/terminology#Count","name":"Count","size":1.0},{"uri":"https://w3id.org/hse/terminology#Projection","name":"Projection","size":1.0},{"uri":"https://w3id.org/hse/terminology#Proportion","name":"Proportion","size":1.0},{"uri":"https://w3id.org/hse/terminology#Rate","name":"Rate","size":1.0},{"uri":"https://w3id.org/hse/terminology#Ratio","name":"Ratio","size":1.0}],"size":1.0},{"uri":"https://w3id.org/hse/terminology#LegalBasisCode","name":"Legal Basis Code","children":[{"uri":"https://w3id.org/hse/terminology#Consent","name":"Consent","size":1.0},{"uri":"https://w3id.org/hse/terminology#ContractPerformance","name":"Contract Performance","size":1.0},{"uri":"https://w3id.org/hse/terminology#DataControllerContract","name":"Data Controller Contract","size":1.0},{"uri":"https://w3id.org/hse/terminology#DataProcessorContract","name":"Data Processor Contract","size":1.0},{"uri":"https://w3id.org/hse/terminology#DataSubjectContract","name":"Data Subject Contract","size":1.0},{"uri":"https://w3id.org/hse/terminology#DataTransferLegalBasis","name":"Data Transfer LegalBasis","size":1.0},{"uri":"https://w3id.org/hse/terminology#EnterIntoContract","name":"Enter Into Contract","size":1.0},{"uri":"https://w3id.org/hse/terminology#LegalObligation","name":"Legal Obligation","size":1.0},{"uri":"https://w3id.org/hse/terminology#LegitimateInterest","name":"Legitimate Interest","size":1.0},{"uri":"https://w3id.org/hse/terminology#OfficialAuthorityOfController","name":"Official Authority Of Controller","size":1.0},{"uri":"https://w3id.org/hse/terminology#PublicInterest","name":"Public Interest","size":1.0},{"uri":"https://w3id.org/hse/terminology#ThirdPartyContract","name":"Third Party Contract","size":1.0},{"uri":"https://w3id.org/hse/terminology#VitalInterest","name":"Vital Interest","size":1.0}],"size":1.0},{"uri":"https://w3id.org/hse/terminology#LegislationCode","name":"Legislation Code","children":[{"uri":"https://w3id.org/hse/terminology#EuropeanLegislationIdentifier%28ELI%29","name":"European Legislation Identifier (ELI)","size":1.0}],"size":1.0},{"uri":"https://w3id.org/hse/terminology#LocationCode","name":"Location Code","children":[{"uri":"https://w3id.org/hse/terminology#Ireland","name":"Ireland","children":[{"uri":"https://w3id.org/hse/terminology#County","name":"County","children":[{"uri":"https://w3id.org/hse/terminology#b290333a-2d02-48fe-a9a5-c65fbc1c02aa","name":"Co. Carlow","size":1.0},{"uri":"https://w3id.org/hse/terminology#d8274b03-4107-47c6-a3cf-7e9c207e2d04","name":"Co. Cavan","size":1.0},{"uri":"https://w3id.org/hse/terminology#85a36ea2-951c-44d4-809b-aae227d5ce41","name":"Co. Clare","size":1.0},{"uri":"https://w3id.org/hse/terminology#834360b6-4ac4-4efe-952f-c2931325fbfb","name":"Co. Cork","size":1.0},{"uri":"https://w3id.org/hse/terminology#8d049be5-cefb-4bb2-ba68-89e803fedfc8","name":"Co. Donegal","size":1.0},{"uri":"https://w3id.org/hse/terminology#899d2270-b799-4a53-ab11-0d8f943e7816","name":"Co. Dublin","size":1.0},{"uri":"https://w3id.org/hse/terminology#4a911afc-e87b-4646-81e7-938c760d7630","name":"Co. Galway","size":1.0},{"uri":"https://w3id.org/hse/terminology#43a5d004-6e8e-451f-8cfc-e98041b7327e","name":"Co. Kerry","size":1.0},{"uri":"https://w3id.org/hse/terminology#3d49b3bf-0478-4a52-a06c-b0cf0af6ee56","name":"Co. Kildare","size":1.0},{"uri":"https://w3id.org/hse/terminology#8e7ed748-b876-4a2e-b8fe-3094ec07f885","name":"Co. Kilkenny","size":1.0},{"uri":"https://w3id.org/hse/terminology#ea2fc562-f67b-4022-8dbe-eb14c449fd78","name":"Co. Laois","size":1.0},{"uri":"https://w3id.org/hse/terminology#96b9370b-bf36-474e-b1e8-d34a21bbc6ff","name":"Co. Leitrim","size":1.0},{"uri":"https://w3id.org/hse/terminology#67e481da-dc57-44ab-98ee-d847db6cfbcf","name":"Co. Limerick","size":1.0},{"uri":"https://w3id.org/hse/terminology#09513bcb-4990-4fd2-bd3e-249e0e9baf14","name":"Co. Longford","size":1.0},{"uri":"https://w3id.org/hse/terminology#2054b2ba-e02f-4c49-904f-c4b15849e7ef","name":"Co. Louth","size":1.0},{"uri":"https://w3id.org/hse/terminology#7ea14f73-8947-43ca-bf94-dd4890454a7b","name":"Co. Mayo","size":1.0},{"uri":"https://w3id.org/hse/terminology#5561f445-7193-41fd-9873-777510532d9e","name":"Co. Meath","size":1.0},{"uri":"https://w3id.org/hse/terminology#424bc103-1407-491a-92ea-ce69a86b96b7","name":"Co. Monaghan","size":1.0},{"uri":"https://w3id.org/hse/terminology#4d75c870-ddf6-492e-883b-d8be252c1785","name":"Co. Offaly","size":1.0},{"uri":"https://w3id.org/hse/terminology#d8900e67-d82f-4cae-837d-838f1d6835e2","name":"Co. Roscommon","size":1.0},{"uri":"https://w3id.org/hse/terminology#c8036a34-2260-4ed6-bfb5-c51ed01ca093","name":"Co. Sligo","size":1.0},{"uri":"https://w3id.org/hse/terminology#6a291fef-59ae-4874-acdb-6ff3a70d5e48","name":"Co. Tipperary","size":1.0},{"uri":"https://w3id.org/hse/terminology#33a7945f-d2dd-4a37-a17e-e9c54c2f6a01","name":"Co. Waterford","size":1.0},{"uri":"https://w3id.org/hse/terminology#9ced33ba-89ca-4eae-89ed-d775b1e752fe","name":"Co. Westmeath","size":1.0},{"uri":"https://w3id.org/hse/terminology#6881275e-4f65-4359-beef-374259bc4915","name":"Co. Wexford","size":1.0},{"uri":"https://w3id.org/hse/terminology#ab68fe80-cd70-49bf-a361-6c81ba945543","name":"Co. Wicklow","size":1.0}],"size":1.0},{"uri":"https://w3id.org/hse/terminology#HealthRegion","name":"Health Region","children":[{"uri":"https://w3id.org/hse/terminology#98ca33b4-fc08-4aa7-82dd-496924b8fda8","name":"HSE Dublin and Midlands","size":1.0},{"uri":"https://w3id.org/hse/terminology#d0a0aa7d-fbed-4f02-b89f-a51cb0ecf23c","name":"HSE Dublin and South East","size":1.0},{"uri":"https://w3id.org/hse/terminology#c7359538-84af-455a-aa37-f9c43f8850cf","name":"HSE Midwest","size":1.0},{"uri":"https://w3id.org/hse/terminology#9556ecde-e215-4ad0-9b46-ebff56c85299","name":"HSE South West","size":1.0},{"uri":"https://w3id.org/hse/terminology#010e88ab-5f00-4f2c-823c-543ffe62920b","name":"HSE West and North West","size":1.0}],"size":1.0},{"uri":"https://w3id.org/hse/terminology#IHA","name":"IHA, Integrated Healthcare Area","children":[{"uri":"https://w3id.org/hse/terminology#af16d9ee-b6d9-4580-a6e8-ff7c16a4f985","name":"Carlow Kilkenny and Tipperary South IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#7cdafff7-3472-4ad4-ad6d-52d8b099efeb","name":"Cavan Monaghan IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#71a6978d-751b-40c9-b190-979e377a777b","name":"Clare and Limerick County IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#0c7ad581-b94f-4c73-a21a-c85a20d001e2","name":"Cork North and East IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#22c4b2d4-9da4-44d2-8569-7a9d1d088988","name":"Cork South and West IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#ea6c9533-d33c-4d7c-a525-33fe14f1e2be","name":"Donegal IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#5acc75cd-8922-4db7-917d-fce7ab61bc1f","name":"Dublin North City and West IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#368c08d4-dc44-4a5c-aa5b-e2c853ed5fd2","name":"Dublin North County IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#b6efaeec-b5df-4f9b-ae95-759b38f42fa5","name":"Dublin South and Wicklow IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#a7b3ce77-fd43-46f3-8081-b52a49d10f53","name":"Dublin South City and West IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#21f87fa6-fa01-4ddd-bdf7-7618a03c3ff0","name":"Dublin South West IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#e20ddc0f-a8c9-41f6-b37a-6f1f69a0d62b","name":"Galway Roscommon IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#54363705-b437-4a97-a070-df3568bcdf0e","name":"Kerry IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#9e1cac20-be6c-48dd-a338-6dc4f3fd999c","name":"Kildare West Wicklow IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#0eca49db-03b4-4c39-8705-b02f3db4ee48","name":"Limerick City and Tipperary North IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#b153e9c7-2356-41b7-8593-96783aca3803","name":"Louth Meath IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#72772ae6-e50a-4ff1-9f57-533919b290ef","name":"Mayo IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#52033e41-55be-456e-b1dd-e272f98d204a","name":"Midlands IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#3c7bd64d-751b-46d7-afd2-6a85d3371fe2","name":"Sligo Leitrim IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#97ac09fe-1776-4125-b496-882f44900a2c","name":"Waterford Wexford IHA","size":1.0}],"size":1.0}],"size":1.0}],"size":1.0},{"uri":"https://w3id.org/hse/terminology#PersonalDataCode","name":"Personal Data Code","children":[{"uri":"https://w3id.org/hse/terminology#AnonymisedData","name":"AnonymisedData","size":1.0},{"uri":"https://w3id.org/hse/terminology#CollectedPersonalData","name":"CollectedPersonalData","size":1.0},{"uri":"https://w3id.org/hse/terminology#DerivedPersonalData","name":"DerivedPersonalData","size":1.0},{"uri":"https://w3id.org/hse/terminology#GeneratedPersonalData","name":"GeneratedPersonalData","size":1.0},{"uri":"https://w3id.org/hse/terminology#IdentifyingPersonalData","name":"IdentifyingPersonalData","size":1.0},{"uri":"https://w3id.org/hse/terminology#NonPersonalData","name":"NonPersonalData","size":1.0},{"uri":"https://w3id.org/hse/terminology#PersonalData","name":"PersonalData","size":1.0},{"uri":"https://w3id.org/hse/terminology#PseudonymisedData","name":"PseudonymisedData","size":1.0},{"uri":"https://w3id.org/hse/terminology#SensitivePersonalData","name":"SensitivePersonalData","size":1.0}],"size":1.0},{"uri":"https://w3id.org/hse/terminology#PublisherTypeCode","name":"Publisher Type Code","children":[{"uri":"https://w3id.org/hse/terminology#Community-basedandClinicalCareOrganisations","name":"Community-based and Clinical Care Organisations","size":1.0},{"uri":"https://w3id.org/hse/terminology#HealthDepartments","name":"Health Departments","size":1.0},{"uri":"https://w3id.org/hse/terminology#HospitalsandHealthcareProviders","name":"Hospitals and Healthcare Providers","size":1.0},{"uri":"https://w3id.org/hse/terminology#NationalMappingAgency","name":"National Mapping Agency","size":1.0},{"uri":"https://w3id.org/hse/terminology#NationalPublicHealthInstitute","name":"National Public Health Institute","size":1.0},{"uri":"https://w3id.org/hse/terminology#OtherCodes","name":"Other codes","size":1.0},{"uri":"https://w3id.org/hse/terminology#StatisticalAgency","name":"Statistical Agency ","size":1.0},{"uri":"https://w3id.org/hse/terminology#UniversitiesandResearchCenters","name":"Universities and Research Centers","size":1.0}],"size":1.0},{"uri":"https://w3id.org/hse/terminology#SpatialGranularityCode","name":"Spatial Granularity Code","children":[{"uri":"https://w3id.org/hse/terminology#County","name":"County","children":[{"uri":"https://w3id.org/hse/terminology#b290333a-2d02-48fe-a9a5-c65fbc1c02aa","name":"Co. Carlow","size":1.0},{"uri":"https://w3id.org/hse/terminology#d8274b03-4107-47c6-a3cf-7e9c207e2d04","name":"Co. Cavan","size":1.0},{"uri":"https://w3id.org/hse/terminology#85a36ea2-951c-44d4-809b-aae227d5ce41","name":"Co. Clare","size":1.0},{"uri":"https://w3id.org/hse/terminology#834360b6-4ac4-4efe-952f-c2931325fbfb","name":"Co. Cork","size":1.0},{"uri":"https://w3id.org/hse/terminology#8d049be5-cefb-4bb2-ba68-89e803fedfc8","name":"Co. Donegal","size":1.0},{"uri":"https://w3id.org/hse/terminology#899d2270-b799-4a53-ab11-0d8f943e7816","name":"Co. Dublin","size":1.0},{"uri":"https://w3id.org/hse/terminology#4a911afc-e87b-4646-81e7-938c760d7630","name":"Co. Galway","size":1.0},{"uri":"https://w3id.org/hse/terminology#43a5d004-6e8e-451f-8cfc-e98041b7327e","name":"Co. Kerry","size":1.0},{"uri":"https://w3id.org/hse/terminology#3d49b3bf-0478-4a52-a06c-b0cf0af6ee56","name":"Co. Kildare","size":1.0},{"uri":"https://w3id.org/hse/terminology#8e7ed748-b876-4a2e-b8fe-3094ec07f885","name":"Co. Kilkenny","size":1.0},{"uri":"https://w3id.org/hse/terminology#ea2fc562-f67b-4022-8dbe-eb14c449fd78","name":"Co. Laois","size":1.0},{"uri":"https://w3id.org/hse/terminology#96b9370b-bf36-474e-b1e8-d34a21bbc6ff","name":"Co. Leitrim","size":1.0},{"uri":"https://w3id.org/hse/terminology#67e481da-dc57-44ab-98ee-d847db6cfbcf","name":"Co. Limerick","size":1.0},{"uri":"https://w3id.org/hse/terminology#09513bcb-4990-4fd2-bd3e-249e0e9baf14","name":"Co. Longford","size":1.0},{"uri":"https://w3id.org/hse/terminology#2054b2ba-e02f-4c49-904f-c4b15849e7ef","name":"Co. Louth","size":1.0},{"uri":"https://w3id.org/hse/terminology#7ea14f73-8947-43ca-bf94-dd4890454a7b","name":"Co. Mayo","size":1.0},{"uri":"https://w3id.org/hse/terminology#5561f445-7193-41fd-9873-777510532d9e","name":"Co. Meath","size":1.0},{"uri":"https://w3id.org/hse/terminology#424bc103-1407-491a-92ea-ce69a86b96b7","name":"Co. Monaghan","size":1.0},{"uri":"https://w3id.org/hse/terminology#4d75c870-ddf6-492e-883b-d8be252c1785","name":"Co. Offaly","size":1.0},{"uri":"https://w3id.org/hse/terminology#d8900e67-d82f-4cae-837d-838f1d6835e2","name":"Co. Roscommon","size":1.0},{"uri":"https://w3id.org/hse/terminology#c8036a34-2260-4ed6-bfb5-c51ed01ca093","name":"Co. Sligo","size":1.0},{"uri":"https://w3id.org/hse/terminology#6a291fef-59ae-4874-acdb-6ff3a70d5e48","name":"Co. Tipperary","size":1.0},{"uri":"https://w3id.org/hse/terminology#33a7945f-d2dd-4a37-a17e-e9c54c2f6a01","name":"Co. Waterford","size":1.0},{"uri":"https://w3id.org/hse/terminology#9ced33ba-89ca-4eae-89ed-d775b1e752fe","name":"Co. Westmeath","size":1.0},{"uri":"https://w3id.org/hse/terminology#6881275e-4f65-4359-beef-374259bc4915","name":"Co. Wexford","size":1.0},{"uri":"https://w3id.org/hse/terminology#ab68fe80-cd70-49bf-a361-6c81ba945543","name":"Co. Wicklow","size":1.0}],"size":1.0},{"uri":"https://w3id.org/hse/terminology#HealthRegion","name":"Health Region","children":[{"uri":"https://w3id.org/hse/terminology#98ca33b4-fc08-4aa7-82dd-496924b8fda8","name":"HSE Dublin and Midlands","size":1.0},{"uri":"https://w3id.org/hse/terminology#d0a0aa7d-fbed-4f02-b89f-a51cb0ecf23c","name":"HSE Dublin and South East","size":1.0},{"uri":"https://w3id.org/hse/terminology#c7359538-84af-455a-aa37-f9c43f8850cf","name":"HSE Midwest","size":1.0},{"uri":"https://w3id.org/hse/terminology#9556ecde-e215-4ad0-9b46-ebff56c85299","name":"HSE South West","size":1.0},{"uri":"https://w3id.org/hse/terminology#010e88ab-5f00-4f2c-823c-543ffe62920b","name":"HSE West and North West","size":1.0}],"size":1.0},{"uri":"https://w3id.org/hse/terminology#IHA","name":"IHA, Integrated Healthcare Area","children":[{"uri":"https://w3id.org/hse/terminology#af16d9ee-b6d9-4580-a6e8-ff7c16a4f985","name":"Carlow Kilkenny and Tipperary South IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#7cdafff7-3472-4ad4-ad6d-52d8b099efeb","name":"Cavan Monaghan IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#71a6978d-751b-40c9-b190-979e377a777b","name":"Clare and Limerick County IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#0c7ad581-b94f-4c73-a21a-c85a20d001e2","name":"Cork North and East IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#22c4b2d4-9da4-44d2-8569-7a9d1d088988","name":"Cork South and West IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#ea6c9533-d33c-4d7c-a525-33fe14f1e2be","name":"Donegal IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#5acc75cd-8922-4db7-917d-fce7ab61bc1f","name":"Dublin North City and West IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#368c08d4-dc44-4a5c-aa5b-e2c853ed5fd2","name":"Dublin North County IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#b6efaeec-b5df-4f9b-ae95-759b38f42fa5","name":"Dublin South and Wicklow IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#a7b3ce77-fd43-46f3-8081-b52a49d10f53","name":"Dublin South City and West IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#21f87fa6-fa01-4ddd-bdf7-7618a03c3ff0","name":"Dublin South West IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#e20ddc0f-a8c9-41f6-b37a-6f1f69a0d62b","name":"Galway Roscommon IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#54363705-b437-4a97-a070-df3568bcdf0e","name":"Kerry IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#9e1cac20-be6c-48dd-a338-6dc4f3fd999c","name":"Kildare West Wicklow IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#0eca49db-03b4-4c39-8705-b02f3db4ee48","name":"Limerick City and Tipperary North IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#b153e9c7-2356-41b7-8593-96783aca3803","name":"Louth Meath IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#72772ae6-e50a-4ff1-9f57-533919b290ef","name":"Mayo IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#52033e41-55be-456e-b1dd-e272f98d204a","name":"Midlands IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#3c7bd64d-751b-46d7-afd2-6a85d3371fe2","name":"Sligo Leitrim IHA","size":1.0},{"uri":"https://w3id.org/hse/terminology#97ac09fe-1776-4125-b496-882f44900a2c","name":"Waterford Wexford IHA","size":1.0}],"size":1.0},{"uri":"https://w3id.org/hse/terminology#LAU","name":"LAU","size":1.0},{"uri":"https://w3id.org/hse/terminology#LHO","name":"LHO","size":1.0},{"uri":"https://w3id.org/hse/terminology#National","name":"National","size":1.0},{"uri":"https://w3id.org/hse/terminology#NUTS1","name":"NUTS1","size":1.0},{"uri":"https://w3id.org/hse/terminology#NUTS2","name":"NUTS2","size":1.0},{"uri":"https://w3id.org/hse/terminology#NUTS3","name":"NUTS3","size":1.0}],"size":1.0},{"uri":"https://w3id.org/hse/terminology#StatusCode","name":"Status Code","children":[{"uri":"https://w3id.org/hse/terminology#ExcludefromCatalogue","name":"Exclude from Catalogue","size":1.0},{"uri":"https://w3id.org/hse/terminology#ExcludefromProfile","name":"Exclude from Profile","size":1.0},{"uri":"https://w3id.org/hse/terminology#IncludeinCatalogue","name":"Include in Catalogue","size":1.0},{"uri":"https://w3id.org/hse/terminology#IncludeinProfile","name":"Include in Profile","size":1.0},{"uri":"https://w3id.org/hse/terminology#UnderConsideration","name":"Under Consideration","size":1.0}],"size":1.0}],"size":1.0};
+  console.log(dataset.uri);
+  //var json = JSON.parse(dataset);
+// d3.json("json?language=&root=", function(json) {
+  root = dataset;
+  root.x0 = h / 2;
+  root.y0 = 0;
+
+  function toggleAll(d) {
+    if (d.children) {
+      d.children.forEach(toggleAll);
+      toggle(d);
+    }
+  }
+
+  // Initialize the display to show a few nodes.
+  root.children.forEach(toggleAll);
+  update(root);
+// });
+
+function update(source) {
+  var duration = d3.event && d3.event.altKey ? 5000 : 500;
+
+  // Compute the new tree layout.
+  var nodes = tree.nodes(root).reverse();
+
+  // Normalize for fixed-depth.
+  nodes.forEach(function(d) { d.y = d.depth * 180; });
+
+  // Update the nodes…
+  var node = vis.selectAll("g.node")
+      .data(nodes, function(d) { return d.id || (d.id = ++i); });
+
+  // Enter any new nodes at the parent's previous position.
+  var nodeEnter = node.enter().append("svg:g")
+      .attr("class", "node")
+      .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
+      .on("click", function(d) { toggle(d); update(d); });
+
+  nodeEnter.append("svg:circle")
+      .attr("r", 1e-6)
+      .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+
+  // add a link to the concept
+  var a = nodeEnter.append("a")
+	  .attr("xlink:href", function(d){ return d.uri; })
+	  .attr("target", "_blank");
+  
+  a.append("svg:text")
+      .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
+      .attr("dy", ".35em")
+      .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+      .text(function(d) { return (d.name != null)?d.name:d.uri ; })
+      .style("fill-opacity", 1e-6);
+
+  // Transition nodes to their new position.
+  var nodeUpdate = node.transition()
+      .duration(duration)
+      .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+
+  nodeUpdate.select("circle")
+      .attr("r", 6)
+      .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+
+  nodeUpdate.select("text")
+      .style("fill-opacity", 1);
+
+  // Transition exiting nodes to the parent's new position.
+  var nodeExit = node.exit().transition()
+      .duration(duration)
+      .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
+      .remove();
+
+  nodeExit.select("circle")
+      .attr("r", 1e-6);
+
+  nodeExit.select("text")
+      .style("fill-opacity", 1e-6);
+
+  // Update the links…
+  var link = vis.selectAll("path.link")
+      .data(tree.links(nodes), function(d) { return d.target.id; });
+
+  // Enter any new links at the parent's previous position.
+  link.enter().insert("svg:path", "g")
+      .attr("class", "link")
+      .attr("d", function(d) {
+        var o = {x: source.x0, y: source.y0};
+        return diagonal({source: o, target: o});
+      })
+    .transition()
+      .duration(duration)
+      .attr("d", diagonal);
+
+  // Transition links to their new position.
+  link.transition()
+      .duration(duration)
+      .attr("d", diagonal);
+
+  // Transition exiting nodes to the parent's new position.
+  link.exit().transition()
+      .duration(duration)
+      .attr("d", function(d) {
+        var o = {x: source.x, y: source.y};
+        return diagonal({source: o, target: o});
+      })
+      .remove();
+
+  // Stash the old positions for transition.
+  nodes.forEach(function(d) {
+    d.x0 = d.x;
+    d.y0 = d.y;
+  });
+}
+
+// Toggle children.
+function toggle(d) {
+  if (d.children) {
+    d._children = d.children;
+    d.children = null;
+  } else {
+    d.children = d._children;
+    d._children = null;
+  }
+}
+
+    </script>
+    
+    <script>
+        $(document).ready(function () {
+          // add external link behavior to every external link
+          $('text').mouseover(function() {
+            $(this).attr("class", "ext-link");
+          });
+          $('text').mouseout(function() {
+            $(this).attr("class", "");
+          });
+          
+          $('#help-popover').popover({
+        	  html: true,
+              trigger : "click",
+              delay: { show: 0, hide: 400 },
+              content: '<ol><li>Click a blue circle to unfold the tree (white circles are the tree leaves and are inactive).</li><li>Click an open node to fold id.</li><li>Click a label to navigate to this concept URI.</li></ol>',
+              placement: "bottom"
+          });
+          $('#help-popover').css("text-decoration", "underline").css("cursor", "pointer");
+        });         
+    </script>
+  
+</body></html>
